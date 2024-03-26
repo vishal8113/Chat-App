@@ -112,7 +112,13 @@ const DashboardLayout = () => {
                     onClick={() => {
                       setSelected(ele.index);
                     }}
-                    sx={{ width: "max-content" }}
+                    sx={{
+                      width: "max-content",
+                      color:
+                        theme.palette.mode === "light"
+                          ? "#000"
+                          : theme.palette.text.primary,
+                    }}
                     key={ele.index}
                   >
                     {ele.icon}
@@ -128,7 +134,15 @@ const DashboardLayout = () => {
                     borderRadius: 2,
                   }}
                 >
-                  <IconButton sx={{ width: "max-content", color: "#fff" }}>
+                  <IconButton
+                    sx={{
+                      width: "max-content",
+                      color:
+                        theme.palette.mode === "light"
+                          ? "#000"
+                          : theme.palette.text.primary,
+                    }}
+                  >
                     <Gear />
                   </IconButton>
                 </Box>

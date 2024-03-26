@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useMemo } from "react";
 import useSettings from "../hooks/useSettings";
 import palette from "./palette";
@@ -8,6 +9,10 @@ import {
 } from "@mui/material/styles";
 
 import { CssBaseline } from "@mui/material";
+
+ThemeProvider.propTypes = {
+  children: PropTypes.node,
+};
 
 export default function ThemeProvider({ children }) {
   const { themeMode } = useSettings();
