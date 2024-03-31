@@ -1,5 +1,6 @@
+import Chats from "./Chats";
 const GeneralApp = () => {
-  return <></>;
+  return <Chats />;
 };
 
 export default GeneralApp;

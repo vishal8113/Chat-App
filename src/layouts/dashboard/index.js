@@ -1,11 +1,9 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "./SideBar";
-import { Stack } from "@mui/material";
-import NoChat from "../../Assets/Illustrations/NoChat";
+import { Stack } from "@mui/material"; 
 const DashboardLayout = () => {
   return (
     <Stack direction="row">
-      {/* Side Bar */}
       <SideBar />
       <Outlet />
     </Stack>
