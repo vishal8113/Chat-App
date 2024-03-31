@@ -1,10 +1,11 @@
-import DashboardLayout from "./layouts/dashboardLayout";
 import ThemeProvider from "./theme";
+
+import Router from "./routes";
 
 function App() {
   return (
     <ThemeProvider>
-      <DashboardLayout />
+      <Router />
     </ThemeProvider>
   );
 }
