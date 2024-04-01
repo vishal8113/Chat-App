@@ -12,14 +12,20 @@ import {
   StyledInputBase,
   SearchIconWrapper,
 } from "../../components/search";
+import ChatElement from "../../components/ChatElement";
+import { ChatList } from "../../data";
+import { useTheme } from "@mui/material/styles";
 const Chats = () => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
         position: "relative",
-        height: "100vh",
         width: 300,
-        backgroundColor: "#F8FAFF",
+        backgroundColor:
+          theme.palette.mode === "light"
+            ? "#F8FAFF"
+            : theme.palette.background.paper,
         boxShadow: "0px 0px 2px rgba(0,0,0,0.25)",
       }}
     >
@@ -53,6 +59,33 @@ const Chats = () => {
             <Button variant="text">Archived</Button>
           </Stack>
           <Divider />
+        </Stack>
+        <Stack
+          direction={"column"}
+          spacing={2}
+          sx={{
+            flexGrow: 1,
+            overflow: "scroll",
+            height: "100%",
+            overflowX: "hidden",
+          }}
+        >
+          <Stack spacing={2.4}>
+            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+              Pinned
+            </Typography>
+            {ChatList.filter((ele) => ele.pinned).map((ele) => {
+              return <ChatElement {...ele} />;
+            })}
+          </Stack>
+          <Stack spacing={2.4}>
+            <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+              All Chats
+            </Typography>
+            {ChatList.filter((ele) => !ele.pinned).map((ele) => {
+              return <ChatElement {...ele} />;
+            })}
+          </Stack>
         </Stack>
       </Stack>
     </Box>
