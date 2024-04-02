@@ -21,7 +21,7 @@ const Chats = () => {
     <Box
       sx={{
         position: "relative",
-        width: 300,
+        width: 320,
         backgroundColor:
           theme.palette.mode === "light"
             ? "#F8FAFF"
