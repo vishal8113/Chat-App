@@ -1,5 +1,6 @@
 import { Stack, Box, Typography, Link } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import MessageOptions from "../MessageOptions";
 const LinkMsg = ({ ele }) => {
   const theme = useTheme();
   <Stack direction={"row"} justifyContent={ele.incoming ? "start" : "end"}>
@@ -47,6 +48,7 @@ const LinkMsg = ({ ele }) => {
         </Stack>
       </Stack>
     </Box>
+    <MessageOptions />
   </Stack>;
 };
 

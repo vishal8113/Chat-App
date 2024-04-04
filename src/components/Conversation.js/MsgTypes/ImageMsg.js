@@ -1,5 +1,6 @@
 import { Stack, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import MessageOptions from "../MessageOptions";
 const ImageMsg = ({ ele }) => {
   const theme = useTheme();
   return (
@@ -28,6 +29,7 @@ const ImageMsg = ({ ele }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };

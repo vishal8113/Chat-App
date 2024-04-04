@@ -1,6 +1,7 @@
 import { Stack, Box, Typography, IconButton } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { DownloadSimple, Image } from "phosphor-react";
+import MessageOptions from "../MessageOptions";
 const DocMsg = ({ ele }) => {
   const theme = useTheme();
   return (
@@ -40,6 +41,7 @@ const DocMsg = ({ ele }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };

@@ -1,5 +1,6 @@
 import { Stack, Typography, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import MessageOptions from "../MessageOptions";
 const ReplyMsg = ({ ele }) => {
   const theme = useTheme();
   return (
@@ -37,6 +38,7 @@ const ReplyMsg = ({ ele }) => {
           </Typography>
         </Stack>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };

@@ -1,5 +1,6 @@
 import { Stack, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import MessageOptions from "../MessageOptions";
 
 const TextMsg = ({ ele }) => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ const TextMsg = ({ ele }) => {
           {ele.message}
         </Typography>
       </Box>
+      <MessageOptions />
     </Stack>
   );
 };
