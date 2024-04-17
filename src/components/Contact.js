@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Stack,
@@ -6,6 +7,12 @@ import {
   Avatar,
   Divider,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Slide,
 } from "@mui/material";
 import {
   Bell,
@@ -21,11 +28,73 @@ import { useTheme } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { faker } from "@faker-js/faker";
 import AntSwitch from "./AntSwitch";
-import { UpdateSidebarType, ToggleSidebar } from "../redux/slices/app";
+import { ToggleSidebar } from "../redux/slices/app";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
+const BlockDialog = ({ open, handleClose }) => {
+  return (
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle>Block this User</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          Are You sure you want to block this user?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>No</Button>
+        <Button onClick={handleClose}>Yes</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const ClearDialog = ({ open, handleClose }) => {
+  return (
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleClose}
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <DialogTitle>Clear the Chat</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-slide-description">
+          Are You sure you want to Clear Messages?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>No</Button>
+        <Button onClick={handleClose}>Yes</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 const Contact = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  const [openBlockDialog, setOpenBlockDialog] = useState(false);
+  const [openClearDialog, setOpenClearDialog] = useState(false);
+
+  const handleCloseBlockDialog = () => {
+    setOpenBlockDialog(false);
+  };
+
+  const handleCloseClearDialog = () => {
+    setOpenClearDialog(false);
+  };
+
   return (
     <Box sx={{ width: 320, height: "100vh" }}>
       <Stack sx={{ height: "100%" }}>
@@ -107,14 +176,7 @@ const Contact = () => {
             justifyContent={"space-between"}
           >
             <Typography variant="subtitle2">Media,Links & Docs</Typography>
-            <Button
-              onClick={() => {
-                dispatch(UpdateSidebarType("MEDIA"));
-              }}
-              endIcon={<CaretRight />}
-            >
-              121
-            </Button>
+            <Button endIcon={<CaretRight />}>121</Button>
           </Stack>
           <Stack direction={"row"} spacing={2} alignItems={"center"}>
             {[1, 2, 3].map((ele) => (
@@ -136,11 +198,7 @@ const Contact = () => {
               <Star size={21} />
               <Typography variant="subtitle2">Starred Messages</Typography>
             </Stack>
-            <IconButton
-              onClick={() => {
-                dispatch(UpdateSidebarType("STARRED"));
-              }}
-            >
+            <IconButton>
               <CaretRight size={21} />
             </IconButton>
           </Stack>
@@ -168,15 +226,41 @@ const Contact = () => {
             </Stack>
           </Stack>
           <Stack direction={"row"} alignItems={"center"} spacing={2}>
-            <Button startIcon={<Prohibit />} fullWidth variant="outlined">
+            <Button
+              onClick={() => {
+                setOpenBlockDialog(true);
+              }}
+              startIcon={<Prohibit />}
+              fullWidth
+              variant="outlined"
+            >
               Block
             </Button>
-            <Button startIcon={<Trash />} fullWidth variant="outlined">
+            <Button
+              onClick={() => {
+                setOpenClearDialog(true);
+              }}
+              startIcon={<Trash />}
+              fullWidth
+              variant="outlined"
+            >
               Clear
             </Button>
           </Stack>
         </Stack>
       </Stack>
+      {openBlockDialog && (
+        <BlockDialog
+          open={openBlockDialog}
+          handleClose={handleCloseBlockDialog}
+        />
+      )}
+      {openClearDialog && (
+        <ClearDialog
+          open={openClearDialog}
+          handleClose={handleCloseClearDialog}
+        />
+      )}
     </Box>
   );
 };

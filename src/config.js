@@ -3,4 +3,7 @@ export const defaultSettings = {
   themeMode: "light",
 };
 
-export const DEFAULT_PATH = PATH_DASHBOARD.general.app;
+const DEFAULT_PATH = PATH_DASHBOARD.general.app;
+const AUTH_DEFAULT = PATH_DASHBOARD.general.login;
+
+export { DEFAULT_PATH, AUTH_DEFAULT };

@@ -4,7 +4,7 @@ import Conversation from "../../components/Conversation.js";
 import { useTheme } from "@mui/material/styles";
 import Contact from "../../components/Contact";
 import { useSelector } from "react-redux";
-import SharedMessages from "../../components/SharedMessages";
+
 const GeneralApp = () => {
   const theme = useTheme();
   const { sidebar } = useSelector((state) => state.app);
@@ -40,6 +40,19 @@ const GeneralApp = () => {
           // })()} */}
 
         {sidebar.open && <Contact />}
+
+        {/* {sidebar.open &&
+          (() => {
+            switch (sidebar.sectionType) {
+              case "CONTACT":
+                return <Contact />;
+              case "MEDIA":
+                return <SharedMessages />;
+
+              default:
+                break;
+            }
+          })()} */}
       </Stack>
     </>
   );
