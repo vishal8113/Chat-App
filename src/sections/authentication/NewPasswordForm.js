@@ -12,9 +12,14 @@ import {
 } from "@mui/material";
 import CustomTextField from "../../components/hook-form/CustomTextField";
 import { Eye, EyeSlash } from "phosphor-react";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+import { NewPassword } from "../../redux/slices/auth";
 
 const NewPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const [queryParameters] = useSearchParams();
 
   const NewPasswordSchema = Yup.object().shape({
     password: Yup.string()
@@ -48,6 +53,8 @@ const NewPasswordForm = () => {
   const onSubmit = async (data) => {
     try {
       // submit data to forgot-password
+      const password = data.password;
+      dispatch(NewPassword({ password, token: queryParameters.get("token") }));
     } catch (error) {
       console.log(error);
       reset();

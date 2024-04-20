@@ -13,9 +13,13 @@ import FormProvider from "../../components/hook-form/FormProvider";
 import CustomTextField from "../../components/hook-form/CustomTextField";
 import { useState } from "react";
 import { Eye, EyeSlash } from "phosphor-react";
+import { useDispatch } from "react-redux";
+import { RegisterUser } from "../../redux/slices/auth";
+
 const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const dispatch = useDispatch();
   const RegistrationSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -44,7 +48,9 @@ const RegistrationForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      // submit data to server
+      const email = data.email;
+      const password = data.password;
+      dispatch(RegisterUser({ email, password }));
     } catch (error) {
       console.error(error);
       reset();
