@@ -3,7 +3,8 @@ export const defaultSettings = {
   themeMode: "light",
 };
 
-const DEFAULT_PATH = PATH_DASHBOARD.general.app;
-const AUTH_DEFAULT = PATH_DASHBOARD.general.login;
+export const BASE_URL = "http://localhost:3001";
 
-export { DEFAULT_PATH, AUTH_DEFAULT };
+const DEFAULT_PATH = PATH_DASHBOARD.general.app;
+
+export { DEFAULT_PATH };

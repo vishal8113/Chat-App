@@ -18,9 +18,12 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { useState } from "react";
 import { Eye, EyeSlash } from "phosphor-react";
+import { LogInUser } from "../../redux/slices/auth";
+import { useDispatch } from "react-redux";
 
 export default function AuthLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -31,8 +34,8 @@ export default function AuthLoginForm() {
   });
 
   const defaultValues = {
-    email: "demo@example.com",
-    password: "pswd@1234",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({
@@ -50,6 +53,7 @@ export default function AuthLoginForm() {
   const onSubmit = async (data) => {
     try {
       // submit data to server
+      dispatch(LogInUser(data));
     } catch (error) {
       console.error(error);
       reset();

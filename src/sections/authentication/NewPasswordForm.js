@@ -22,7 +22,10 @@ const NewPasswordForm = () => {
       .required("Password is required"),
     passwordConfirm: Yup.string()
       .required("Password is required")
-      .oneOf([Yup.ref("password"), null], "Password must match."),
+      .oneOf(
+        [Yup.ref("password"), null],
+        "Password and confirm password must be same."
+      ),
   });
 
   const defaultValues = {
@@ -44,7 +47,6 @@ const NewPasswordForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("connecting");
       // submit data to forgot-password
     } catch (error) {
       console.log(error);

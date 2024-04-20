@@ -15,9 +15,13 @@ import { useTheme } from "@mui/material/styles";
 import useSettings from "../../hooks/useSettings";
 import AntSwitch from "../../components/AntSwitch";
 import { Profile_Options } from "../../data";
+import { useDispatch } from "react-redux";
+import { LogOutUser } from "../../redux/slices/auth";
 const SideBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -158,7 +162,15 @@ const SideBar = () => {
           >
             <Stack spacing={1} px={1}>
               {Profile_Options.map((el) => (
-                <MenuItem onClick={handleClose}>{el.title}</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    if (el.index === 1) {
+                      dispatch(LogOutUser());
+                    }
+                  }}
+                >
+                  {el.title}
+                </MenuItem>
               ))}
             </Stack>
           </Menu>

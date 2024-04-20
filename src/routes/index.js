@@ -6,7 +6,6 @@ import DashboardLayout from "../layouts/dashboard";
 
 import LoadingScreen from "../components/LoadingScreen";
 import { DEFAULT_PATH } from "../config";
-import { AUTH_DEFAULT } from "../config";
 import AuthLayout from "../layouts/auth";
 
 const Loadable = (Component) => (props) => {
@@ -23,7 +22,6 @@ const Router = () => {
       path: "/auth",
       element: <AuthLayout />,
       children: [
-        { element: <Navigate to={AUTH_DEFAULT} replace /> },
         { path: "login", element: <LoginPage /> },
         { path: "register", element: <RegisterPage /> },
         { path: "reset-password", element: <ResetPasswordPage /> },

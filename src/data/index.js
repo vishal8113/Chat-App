@@ -8,6 +8,7 @@ import {
   ChatCircleDots,
   Users,
   Phone,
+  SignOut,
 } from "phosphor-react";
 
 const NavButton = [
@@ -202,9 +203,13 @@ const Message_options = [
 const Profile_Options = [
   {
     title: "Edit Profile",
+    icon: <User />,
+    index: 0,
   },
   {
     title: "Logout",
+    icon: <SignOut />,
+    index: 1,
   },
 ];
 

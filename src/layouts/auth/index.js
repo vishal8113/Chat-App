@@ -1,9 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { Container, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 
 import Logo from "../../Assets/Images/favicon.ico";
 
 const AuthLayout = () => {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  if (isLoggedIn) {
+    return <Navigate to="/app" />;
+  }
   return (
     <>
       <>
