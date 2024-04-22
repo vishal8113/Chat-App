@@ -8,18 +8,21 @@ import {
   Alert,
   InputAdornment,
   IconButton,
+  Box,
   Button,
 } from "@mui/material";
 import CustomTextField from "../../components/hook-form/CustomTextField";
 import { Eye, EyeSlash } from "phosphor-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { NewPassword } from "../../redux/slices/auth";
+import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 
 const NewPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const [queryParameters] = useSearchParams();
+  const { isLoading } = useSelector((state) => state.auth);
 
   const NewPasswordSchema = Yup.object().shape({
     password: Yup.string()
@@ -119,25 +122,28 @@ const NewPasswordForm = () => {
       ></Stack>
 
       <Stack direction={"row"} alignItems={"center"} width={"100%"}>
-        <Button
-          fullWidth
-          color="inherit"
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
-            "&:hover": {
-              bgcolor: "text.primary",
+        <Box sx={{ m: 1, position: "relative" }}>
+          <Button
+            fullWidth
+            color="inherit"
+            size="large"
+            type="submit"
+            variant="contained"
+            sx={{
+              bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
-            },
-          }}
-        >
-          Submit
-        </Button>
+              "&:hover": {
+                bgcolor: isLoading ? "grey.400" : "text.primary",
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "common.white" : "grey.800",
+              },
+            }}
+          >
+            {isLoading ? "Please wait..." : "Submit"}
+          </Button>
+          {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
+        </Box>
       </Stack>
     </FormProvider>
   );

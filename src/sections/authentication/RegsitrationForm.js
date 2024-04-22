@@ -6,6 +6,7 @@ import {
   IconButton,
   InputAdornment,
   Button,
+  Box,
 } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -13,13 +14,15 @@ import FormProvider from "../../components/hook-form/FormProvider";
 import CustomTextField from "../../components/hook-form/CustomTextField";
 import { useState } from "react";
 import { Eye, EyeSlash } from "phosphor-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RegisterUser } from "../../redux/slices/auth";
+import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 
 const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const RegistrationSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -105,25 +108,28 @@ const RegistrationForm = () => {
             ),
           }}
         />
-        <Button
-          fullWidth
-          color="inherit"
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
-            "&:hover": {
-              bgcolor: "text.primary",
+        <Box sx={{ m: 1, position: "relative" }}>
+          <Button
+            fullWidth
+            color="inherit"
+            size="large"
+            type="submit"
+            variant="contained"
+            sx={{
+              bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
-            },
-          }}
-        >
-          Register
-        </Button>
+              "&:hover": {
+                bgcolor: isLoading ? "grey.400" : "text.primary",
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "common.white" : "grey.800",
+              },
+            }}
+          >
+            {isLoading ? "Please wait..." : "Register"}
+          </Button>
+          {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
+        </Box>
       </Stack>
     </FormProvider>
   );

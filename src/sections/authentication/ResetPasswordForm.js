@@ -2,13 +2,15 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FormProvider from "../../components/hook-form/FormProvider";
-import { Stack, Alert, Button } from "@mui/material";
+import { Stack, Alert, Button, Box } from "@mui/material";
 import CustomTextField from "../../components/hook-form/CustomTextField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ResetPassword } from "../../redux/slices/auth";
+import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 
 const ResetPasswordForm = () => {
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -56,25 +58,28 @@ const ResetPasswordForm = () => {
           <CustomTextField name={"email"} label="Email" />
         </Stack>
 
-        <Button
-          fullWidth
-          color="inherit"
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
-            "&:hover": {
-              bgcolor: "text.primary",
+        <Box sx={{ m: 1, position: "relative" }}>
+          <Button
+            fullWidth
+            color="inherit"
+            size="large"
+            type="submit"
+            variant="contained"
+            sx={{
+              bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
-            },
-          }}
-        >
-          Send Reset Email
-        </Button>
+              "&:hover": {
+                bgcolor: isLoading ? "grey.400" : "text.primary",
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "common.white" : "grey.800",
+              },
+            }}
+          >
+            {isLoading ? "Please wait" : "Send Reset Email"}
+          </Button>
+          {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
+        </Box>
       </Stack>
     </FormProvider>
   );

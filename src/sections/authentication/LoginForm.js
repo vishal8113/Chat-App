@@ -9,6 +9,7 @@ import {
   IconButton,
   Link,
   Button,
+  Box,
 } from "@mui/material";
 
 import FormProvider from "../../components/hook-form/FormProvider";
@@ -19,11 +20,13 @@ import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import { Eye, EyeSlash } from "phosphor-react";
 import { LogInUser } from "../../redux/slices/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 
 export default function AuthLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
       .required("Email is required")
@@ -102,6 +105,9 @@ export default function AuthLoginForm() {
         >
           Forgot Your Password?
         </Link>
+      </Stack>
+
+      <Box sx={{ m: 1, position: "relative" }}>
         <Button
           fullWidth
           color="inherit"
@@ -109,20 +115,20 @@ export default function AuthLoginForm() {
           type="submit"
           variant="contained"
           sx={{
-            bgcolor: "text.primary",
+            bgcolor: isLoading ? "grey.400" : "text.primary",
             color: (theme) =>
               theme.palette.mode === "light" ? "common.white" : "grey.800",
             "&:hover": {
-              bgcolor: "text.primary",
+              bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
             },
-            mt: 2,
           }}
         >
-          Login
+          {isLoading ? "Please wait..." : "Login"}
         </Button>
-      </Stack>
+        {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
+      </Box>
     </FormProvider>
   );
 }

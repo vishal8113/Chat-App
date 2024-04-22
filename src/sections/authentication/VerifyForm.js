@@ -3,16 +3,18 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Box } from "@mui/material";
 
 import FormProvider from "../../components/hook-form/FormProvider";
 import CustomCodeTextField from "../../components/hook-form/CustomCodeTextField";
 import { useDispatch, useSelector } from "react-redux";
 import { VerifyEmail } from "../../redux/slices/auth";
+import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 
 export default function VerifyForm() {
   const { email } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.auth);
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.string().required("Input is required"),
     code2: Yup.string().required("Input is required"),
@@ -61,25 +63,28 @@ export default function VerifyForm() {
           inputs={["code1", "code2", "code3", "code4", "code5", "code6"]}
         />
 
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{
-            mt: 3,
-            bgcolor: "text.primary",
-            color: (theme) =>
-              theme.palette.mode === "light" ? "common.white" : "grey.800",
-            "&:hover": {
-              bgcolor: "text.primary",
+        <Box sx={{ m: 1, position: "relative" }}>
+          <Button
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            sx={{
+              mt: 3,
+              bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
-            },
-          }}
-        >
-          Verify
-        </Button>
+              "&:hover": {
+                bgcolor: isLoading ? "grey.400" : "text.primary",
+                color: (theme) =>
+                  theme.palette.mode === "light" ? "common.white" : "grey.800",
+              },
+            }}
+          >
+            {isLoading ? "Please wait..." : "Verify"}
+          </Button>
+          <ProgressBarIntegration isLoading={isLoading} />
+        </Box>
       </Stack>
     </FormProvider>
   );

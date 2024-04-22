@@ -3,8 +3,14 @@ import { Stack, Typography, Link } from "@mui/material";
 import ResetPasswordForm from "../../sections/authentication/ResetPasswordForm";
 import { Link as RouterLink } from "react-router-dom";
 import { CaretLeft } from "phosphor-react";
+import { useSelector } from "react-redux";
+import { CloseSnackBar } from "../../redux/slices/app";
+import SnackBarIntegration from "../../components/SnackBarIntegration";
 
 const ResetPasswordPage = () => {
+  const { openSnackBar, snackBarMessage, snackBarSeverity } = useSelector(
+    (state) => state.app
+  );
   return (
     <>
       <Stack
@@ -43,6 +49,14 @@ const ResetPasswordPage = () => {
             Return to Sign In
           </Link>
         </Stack>
+        {openSnackBar && (
+          <SnackBarIntegration
+            open={openSnackBar}
+            severity={snackBarSeverity}
+            message={snackBarMessage}
+            CloseSnackBar={CloseSnackBar}
+          />
+        )}
       </Stack>
     </>
   );

@@ -4,8 +4,14 @@ import { Link as RouterLink } from "react-router-dom";
 
 import AuthSocial from "../../sections/authentication/AuthSocial";
 import AuthLoginForm from "../../sections/authentication/LoginForm";
+import { useSelector } from "react-redux";
+import { CloseSnackBar } from "../../redux/slices/app";
+import SnackBarIntegration from "../../components/SnackBarIntegration";
 
 const LoginPage = () => {
+  const { openSnackBar, snackBarMessage, snackBarSeverity } = useSelector(
+    (state) => state.app
+  );
   return (
     <>
       <Stack spacing={2} sx={{ mb: 5, position: "relative" }}>
@@ -20,6 +26,15 @@ const LoginPage = () => {
         <AuthLoginForm />
         {/* Auth Social */}
         <AuthSocial />
+
+        {openSnackBar && (
+          <SnackBarIntegration
+            open={openSnackBar}
+            severity={snackBarSeverity}
+            message={snackBarMessage}
+            CloseSnackBar={CloseSnackBar}
+          />
+        )}
       </Stack>
     </>
   );
