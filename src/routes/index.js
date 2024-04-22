@@ -27,6 +27,7 @@ const Router = () => {
         { path: "reset-password", element: <ResetPasswordPage /> },
         { path: "new-password", element: <NewPasswordPage /> },
         { path: "verify", element: <VerifyOTPPage /> },
+        { path: "create-profile", element: <CreateProfilePage /> },
       ],
     },
     {
@@ -63,6 +64,10 @@ const NewPasswordPage = Loadable(
 
 const VerifyOTPPage = Loadable(
   lazy(() => import("../pages/authenticationPages/VerifyOTPPage"))
+);
+
+const CreateProfilePage = Loadable(
+  lazy(() => import("../pages/authenticationPages/CreateProfilePage"))
 );
 
 const Page404 = Loadable(lazy(() => import("../pages/Page404")));

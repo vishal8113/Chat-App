@@ -248,6 +248,51 @@ export function VerifyEmail(formValues) {
       )
       .then((resp) => {
         console.log(resp);
+
+        dispatch(OpenSnackBar());
+        dispatch(SnackBarMessage(resp.data.message));
+        dispatch(SnackBarSeverity("success"));
+        dispatch(
+          slice.actions.updateIsLoading({
+            isLoading: false,
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(OpenSnackBar());
+        dispatch(SnackBarMessage(err.response.data.message));
+        dispatch(SnackBarSeverity("error"));
+        dispatch(
+          slice.actions.updateIsLoading({
+            isLoading: false,
+          })
+        );
+      });
+  };
+}
+
+export function saveUserProfile(formValues) {
+  return async (dispatch, getState) => {
+    dispatch(
+      slice.actions.updateIsLoading({
+        isLoading: true,
+      })
+    );
+    axios
+      .post(
+        "/api/v1/auth/create-profile",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((resp) => {
+        console.log(resp);
         dispatch(
           slice.actions.login({
             isLoggedIn: true,

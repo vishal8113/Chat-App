@@ -121,30 +121,28 @@ const NewPasswordForm = () => {
         }}
       ></Stack>
 
-      <Stack direction={"row"} alignItems={"center"} width={"100%"}>
-        <Box sx={{ m: 1, position: "relative" }}>
-          <Button
-            fullWidth
-            color="inherit"
-            size="large"
-            type="submit"
-            variant="contained"
-            sx={{
+      <Box sx={{ m: 1, position: "relative" }}>
+        <Button
+          fullWidth
+          color="inherit"
+          size="large"
+          type="submit"
+          variant="contained"
+          sx={{
+            bgcolor: isLoading ? "grey.400" : "text.primary",
+            color: (theme) =>
+              theme.palette.mode === "light" ? "common.white" : "grey.800",
+            "&:hover": {
               bgcolor: isLoading ? "grey.400" : "text.primary",
               color: (theme) =>
                 theme.palette.mode === "light" ? "common.white" : "grey.800",
-              "&:hover": {
-                bgcolor: isLoading ? "grey.400" : "text.primary",
-                color: (theme) =>
-                  theme.palette.mode === "light" ? "common.white" : "grey.800",
-              },
-            }}
-          >
-            {isLoading ? "Please wait..." : "Submit"}
-          </Button>
-          {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
-        </Box>
-      </Stack>
+            },
+          }}
+        >
+          {isLoading ? "Please wait..." : "Submit"}
+        </Button>
+        {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
+      </Box>
     </FormProvider>
   );
 };
