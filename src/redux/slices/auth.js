@@ -7,6 +7,8 @@ const initialState = {
   token: "",
   email: "",
   isLoading: false,
+  profileImageUrl:
+    "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
 };
 
 const slice = createSlice({
@@ -30,19 +32,44 @@ const slice = createSlice({
     updateIsLoading(state, action) {
       state.isLoading = action.payload.isLoading;
     },
+    updateProfileUrl(state, action) {
+      state.profileImageUrl = action.payload.profileImageUrl;
+    },
   },
 });
 
 export default slice.reducer;
 
-// HOFs (Higher order function)
-export function LogInUser(formValues) {
-  return async (dispatch, getState) => {
+function dispatchIsLoading(dispatch, loadingVal) {
+  if (loadingVal) {
     dispatch(
       slice.actions.updateIsLoading({
         isLoading: true,
       })
     );
+  } else {
+    dispatch(
+      slice.actions.updateIsLoading({
+        isLoading: false,
+      })
+    );
+  }
+}
+
+function dispatchSnackBar(dispatch, resp, severity) {
+  dispatch(OpenSnackBar());
+  if (resp.data) {
+    dispatch(SnackBarMessage(resp.data.message));
+  } else {
+    dispatch(SnackBarMessage(resp.response.data.message));
+  }
+  dispatch(SnackBarSeverity(severity));
+}
+
+// HOFs (Higher order function)
+export function LogInUser(formValues) {
+  return async (dispatch, getState) => {
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/login",
@@ -64,22 +91,15 @@ export function LogInUser(formValues) {
           })
         );
 
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
 
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
-        dispatch(slice.actions.updateIsLoading({ isLoading: false }));
+        dispatchSnackBar(dispatch, err, "error");
+
+        dispatchIsLoading(dispatch, false);
       });
   };
 }
@@ -92,11 +112,7 @@ export function LogOutUser() {
 
 export function ResetPassword(formValues) {
   return async (dispatch, getState) => {
-    dispatch(
-      slice.actions.updateIsLoading({
-        isLoading: true,
-      })
-    );
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/forgot-password",
@@ -114,33 +130,21 @@ export function ResetPassword(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(resp.data.message));
         dispatch(SnackBarSeverity("success"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       })
       .catch((err) => {
         console.log(err);
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(err.response.data.message));
         dispatch(SnackBarSeverity("error"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       });
   };
 }
 
 export function NewPassword(formValues) {
   return async (dispatch, getState) => {
-    dispatch(
-      slice.actions.updateIsLoading({
-        isLoading: true,
-      })
-    );
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/reset-password",
@@ -158,11 +162,7 @@ export function NewPassword(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(resp.data.message));
         dispatch(SnackBarSeverity("success"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
 
         window.location.href = "/auth/login";
       })
@@ -171,22 +171,14 @@ export function NewPassword(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(err.response.data.message));
         dispatch(SnackBarSeverity("error"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       });
   };
 }
 
 export function RegisterUser(formValues) {
   return async (dispatch, getState) => {
-    dispatch(
-      slice.actions.updateIsLoading({
-        isLoading: true,
-      })
-    );
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/register",
@@ -205,11 +197,7 @@ export function RegisterUser(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(resp.data.message));
         dispatch(SnackBarSeverity("success"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
 
         window.location.href = "/auth/verify";
       })
@@ -218,22 +206,14 @@ export function RegisterUser(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(err.response.data.message));
         dispatch(SnackBarSeverity("error"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       });
   };
 }
 
 export function VerifyEmail(formValues) {
   return async (dispatch, getState) => {
-    dispatch(
-      slice.actions.updateIsLoading({
-        isLoading: true,
-      })
-    );
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/verify-otp",
@@ -252,33 +232,23 @@ export function VerifyEmail(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(resp.data.message));
         dispatch(SnackBarSeverity("success"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
+
+        window.location.href = "/auth/create-profile";
       })
       .catch((err) => {
         console.log(err);
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(err.response.data.message));
         dispatch(SnackBarSeverity("error"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       });
   };
 }
 
 export function saveUserProfile(formValues) {
   return async (dispatch, getState) => {
-    dispatch(
-      slice.actions.updateIsLoading({
-        isLoading: true,
-      })
-    );
+    dispatchIsLoading(dispatch, true);
     axios
       .post(
         "/api/v1/auth/create-profile",
@@ -293,6 +263,11 @@ export function saveUserProfile(formValues) {
       )
       .then((resp) => {
         console.log(resp);
+        if (resp.data.url) {
+          dispatch(
+            slice.actions.updateProfileUrl({ profileImageUrl: resp.data.url })
+          );
+        }
         dispatch(
           slice.actions.login({
             isLoggedIn: true,
@@ -302,22 +277,14 @@ export function saveUserProfile(formValues) {
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(resp.data.message));
         dispatch(SnackBarSeverity("success"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       })
       .catch((err) => {
         console.log(err);
         dispatch(OpenSnackBar());
         dispatch(SnackBarMessage(err.response.data.message));
         dispatch(SnackBarSeverity("error"));
-        dispatch(
-          slice.actions.updateIsLoading({
-            isLoading: false,
-          })
-        );
+        dispatchIsLoading(dispatch, false);
       });
   };
 }

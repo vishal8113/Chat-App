@@ -39,28 +39,13 @@ export default function AuthLoginForm() {
     formState: { errors },
   } = methods;
 
-  const [selectedImage, setSelectedImage] = useState(null);
-  const handleChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const render = new FileReader();
-      render.onload = () => {
-        setSelectedImage(render.result);
-      };
-      render.readAsDataURL(file);
-    }
-  };
-
   const onSubmit = async (data) => {
     try {
-      // submit data to server
-      dispatch(
-        saveUserProfile({
-          data,
-          selectedImage,
-          email,
-        })
-      );
+      // submit data to backend
+      const name = data.name;
+      const about = data.about;
+      console.log(email);
+      dispatch(saveUserProfile({ name, about, image: selectedImage, email }));
     } catch (error) {
       console.error(error);
       reset();
@@ -69,6 +54,24 @@ export default function AuthLoginForm() {
         message: error.message,
       });
     }
+  };
+
+  const [selectedImage, setSelectedImage] = useState("");
+  const [file, setFile] = useState("");
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
+  };
+
+  const handleChange = (e) => {
+    const file = e.target.files[0];
+    setFile(file);
+    previewFile(file);
   };
 
   return (
@@ -87,10 +90,10 @@ export default function AuthLoginForm() {
         >
           <input
             accept="image/*"
-            id="image-input"
             type="file"
-            onChange={handleChange}
             style={{ display: "none" }}
+            id="image-input"
+            onChange={handleChange}
           />
           <label htmlFor="image-input">
             <Avatar
@@ -100,6 +103,7 @@ export default function AuthLoginForm() {
             />
           </label>
         </Box>
+
         <CustomTextField name="name" label="Name" />
         <CustomTextField name="about" label="About" />
       </Stack>

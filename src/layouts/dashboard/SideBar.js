@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { NavButton } from "../../data";
 import { Gear } from "phosphor-react";
-import { faker } from "@faker-js/faker";
+
 import { useTheme } from "@mui/material/styles";
 import useSettings from "../../hooks/useSettings";
 import AntSwitch from "../../components/AntSwitch";
 import { Profile_Options } from "../../data";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogOutUser } from "../../redux/slices/auth";
 const SideBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,6 +31,8 @@ const SideBar = () => {
   const theme = useTheme();
   const { onToggleMode } = useSettings();
   const [selected, setSelected] = useState(0);
+
+  const { profileImageUrl } = useSelector((state) => state.auth);
   return (
     <Box
       p={2}
@@ -135,7 +137,7 @@ const SideBar = () => {
             }}
           />
           <Avatar
-            src={faker.image.avatar()}
+            src={profileImageUrl}
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
