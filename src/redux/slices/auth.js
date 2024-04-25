@@ -127,16 +127,12 @@ export function ResetPassword(formValues) {
       )
       .then((resp) => {
         console.log(resp);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
+        dispatchSnackBar(dispatch, err, "error");
         dispatchIsLoading(dispatch, false);
       });
   };
@@ -159,18 +155,14 @@ export function NewPassword(formValues) {
       )
       .then((resp) => {
         console.log(resp);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
 
         window.location.href = "/auth/login";
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
+        dispatchSnackBar(dispatch, err, "error");
         dispatchIsLoading(dispatch, false);
       });
   };
@@ -194,18 +186,14 @@ export function RegisterUser(formValues) {
       .then((resp) => {
         console.log(resp);
         dispatch(slice.actions.updateEmail({ email: formValues.email }));
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
 
         window.location.href = "/auth/verify";
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
+        dispatchSnackBar(dispatch, err, "error");
         dispatchIsLoading(dispatch, false);
       });
   };
@@ -229,18 +217,14 @@ export function VerifyEmail(formValues) {
       .then((resp) => {
         console.log(resp);
 
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
 
         window.location.href = "/auth/create-profile";
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
+        dispatchSnackBar(dispatch, err, "error");
         dispatchIsLoading(dispatch, false);
       });
   };
@@ -274,16 +258,12 @@ export function saveUserProfile(formValues) {
             token: resp.data.token,
           })
         );
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(resp.data.message));
-        dispatch(SnackBarSeverity("success"));
+        dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
       })
       .catch((err) => {
         console.log(err);
-        dispatch(OpenSnackBar());
-        dispatch(SnackBarMessage(err.response.data.message));
-        dispatch(SnackBarSeverity("error"));
+        dispatchSnackBar(dispatch, err, "error");
         dispatchIsLoading(dispatch, false);
       });
   };
