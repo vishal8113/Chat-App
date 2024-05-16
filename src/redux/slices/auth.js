@@ -84,6 +84,20 @@ export function LogInUser(formValues) {
       )
       .then((resp) => {
         console.log(resp);
+        if (resp.data.url) {
+          dispatch(
+            slice.actions.updateProfileUrl({
+              profileImageUrl: resp.data.url,
+            })
+          );
+        } else {
+          dispatch(
+            slice.actions.updateProfileUrl({
+              profileImageUrl:
+                "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
+            })
+          );
+        }
         dispatch(
           slice.actions.login({
             isLoggedIn: true,
@@ -250,6 +264,13 @@ export function saveUserProfile(formValues) {
         if (resp.data.url) {
           dispatch(
             slice.actions.updateProfileUrl({ profileImageUrl: resp.data.url })
+          );
+        } else {
+          dispatch(
+            slice.actions.updateProfileUrl({
+              profileImageUrl:
+                "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
+            })
           );
         }
         dispatch(
