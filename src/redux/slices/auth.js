@@ -9,6 +9,8 @@ const initialState = {
   isLoading: false,
   profileImageUrl:
     "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
+  name: "",
+  about: "",
 };
 
 const slice = createSlice({
@@ -34,6 +36,12 @@ const slice = createSlice({
     },
     updateProfileUrl(state, action) {
       state.profileImageUrl = action.payload.profileImageUrl;
+    },
+    updateUserName(state, action) {
+      state.name = action.payload.name;
+    },
+    updateUserAbout(state, action) {
+      state.about = action.payload.about;
     },
   },
 });
@@ -90,6 +98,9 @@ export function LogInUser(formValues) {
               profileImageUrl: resp.data.url,
             })
           );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
+          dispatch(slice.actions.updateEmail({ email: resp.data.email }));
         } else {
           dispatch(
             slice.actions.updateProfileUrl({
@@ -97,6 +108,9 @@ export function LogInUser(formValues) {
                 "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
             })
           );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
+          dispatch(slice.actions.updateEmail({ email: resp.data.email }));
         }
         dispatch(
           slice.actions.login({
@@ -121,6 +135,8 @@ export function LogInUser(formValues) {
 export function LogOutUser() {
   return async (dispatch, getState) => {
     dispatch(slice.actions.logout());
+    dispatch(slice.actions.updateUserName({ name: "" }));
+    dispatch(slice.actions.updateUserAbout({ about: "" }));
   };
 }
 
@@ -256,6 +272,7 @@ export function saveUserProfile(formValues) {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${getState().token}`,
           },
         }
       )
@@ -265,6 +282,8 @@ export function saveUserProfile(formValues) {
           dispatch(
             slice.actions.updateProfileUrl({ profileImageUrl: resp.data.url })
           );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
         } else {
           dispatch(
             slice.actions.updateProfileUrl({
@@ -272,6 +291,8 @@ export function saveUserProfile(formValues) {
                 "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
             })
           );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
         }
         dispatch(
           slice.actions.login({
@@ -281,6 +302,95 @@ export function saveUserProfile(formValues) {
         );
         dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatchSnackBar(dispatch, err, "error");
+        dispatchIsLoading(dispatch, false);
+      });
+  };
+}
+
+export function editProfile(formValues) {
+  return async (dispatch, getState) => {
+    dispatchIsLoading(dispatch, true);
+    axios
+      .put(
+        "/api/v1/user/editProfile",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${getState().token}`,
+          },
+        }
+      )
+      .then((resp) => {
+        console.log(resp);
+        if (resp.data.url) {
+          dispatch(
+            slice.actions.updateProfileUrl({ profileImageUrl: resp.data.url })
+          );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
+        } else {
+          dispatch(
+            slice.actions.updateProfileUrl({
+              profileImageUrl:
+                "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
+            })
+          );
+          dispatch(slice.actions.updateUserName({ name: resp.data.name }));
+          dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
+        }
+
+        dispatchSnackBar(dispatch, resp, "success");
+        dispatchIsLoading(dispatch, false);
+
+        window.location.href = "/app";
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatchSnackBar(dispatch, err, "error");
+        dispatchIsLoading(dispatch, false);
+      });
+  };
+}
+
+export function removeUser(formValues) {
+  return async (dispatch, getState) => {
+    dispatchIsLoading(dispatch, true);
+    axios
+      .post(
+        "/api/v1/user/removeUser",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((resp) => {
+        console.log(resp);
+        dispatch(slice.actions.updateUserName({ name: "" }));
+        dispatch(slice.actions.updateUserAbout({ about: "" }));
+        dispatch(
+          slice.actions.updateProfileUrl({
+            profileImageUrl:
+              "https://firebasestorage.googleapis.com/v0/b/social-media-app-2c372.appspot.com/o/profile.png?alt=media&token=5cbf7165-9ad8-4388-ad43-cf722be73163",
+          })
+        );
+        dispatch(slice.actions.logout());
+        dispatch(slice.actions.updateEmail({ email: "" }));
+
+        dispatchSnackBar(dispatch, resp, "success");
+        dispatchIsLoading(dispatch, false);
+
+        window.location.href = "/auth/login";
       })
       .catch((err) => {
         console.log(err);

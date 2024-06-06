@@ -10,10 +10,12 @@ import CustomTextField from "../../components/hook-form/CustomTextField";
 import { useDispatch, useSelector } from "react-redux";
 import ProgressBarIntegration from "../../components/ProgressBarIntegration";
 import { useState } from "react";
-import { saveUserProfile } from "../../redux/slices/auth";
+import { editProfile } from "../../redux/slices/auth";
 
-export default function CreateProfileForm() {
-  const { isLoading, email } = useSelector((state) => state.auth);
+export default function EditProfileForm() {
+  const { isLoading, email, profileImageUrl, name, about } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   const CreateProfileSchema = Yup.object().shape({
     name: Yup.string()
@@ -23,8 +25,8 @@ export default function CreateProfileForm() {
   });
 
   const defaultValues = {
-    name: "",
-    about: "",
+    name: name,
+    about: about,
   };
 
   const methods = useForm({
@@ -44,8 +46,7 @@ export default function CreateProfileForm() {
       // submit data to backend
       const name = data.name;
       const about = data.about;
-      console.log(email);
-      dispatch(saveUserProfile({ name, about, image: selectedImage, email }));
+      dispatch(editProfile({ name, about, image: selectedImage, email }));
     } catch (error) {
       console.error(error);
       reset();
@@ -56,7 +57,7 @@ export default function CreateProfileForm() {
     }
   };
 
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(profileImageUrl);
   const [file, setFile] = useState("");
 
   const previewFile = (file) => {
@@ -133,7 +134,7 @@ export default function CreateProfileForm() {
             mt: 3,
           }}
         >
-          {isLoading ? "Please wait..." : "Update"}
+          {isLoading ? "Please wait..." : "Save"}
         </Button>
         {isLoading && <ProgressBarIntegration isLoading={isLoading} />}
       </Box>

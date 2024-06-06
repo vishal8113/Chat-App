@@ -8,21 +8,38 @@ import {
   ChatCircleDots,
   Users,
   Phone,
-  SignOut,
+  Gear,
+  UserPlus,
+  Bell,
 } from "phosphor-react";
 
-const NavButton = [
+const NavButtons_Above_Divider = [
   {
-    index: 0,
+    index: 1,
     icon: <ChatCircleDots></ChatCircleDots>,
   },
   {
-    index: 1,
+    index: 2,
     icon: <Users></Users>,
   },
   {
-    index: 2,
+    index: 3,
     icon: <Phone></Phone>,
+  },
+  {
+    index: 4,
+    icon: <Gear></Gear>,
+  },
+];
+
+const NavButtons_Below_Divider = [
+  {
+    index: 5,
+    icon: <UserPlus></UserPlus>,
+  },
+  {
+    index: 6,
+    icon: <Bell></Bell>,
   },
 ];
 
@@ -200,19 +217,6 @@ const Message_options = [
   },
 ];
 
-const Profile_Options = [
-  {
-    title: "Edit Profile",
-    icon: <User />,
-    index: 0,
-  },
-  {
-    title: "Logout",
-    icon: <SignOut />,
-    index: 1,
-  },
-];
-
 const Action_Buttons = [
   {
     color: "#4da5fe",
@@ -247,10 +251,10 @@ const Action_Buttons = [
 ];
 
 export {
-  NavButton,
+  NavButtons_Above_Divider,
+  NavButtons_Below_Divider,
   ChatList,
   Chat_History,
   Message_options,
-  Profile_Options,
   Action_Buttons,
 };

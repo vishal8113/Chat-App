@@ -36,16 +36,38 @@ const Router = () => {
       children: [
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
         { path: "app", element: <General /> },
+        { path: "profile", element: <ProfilePage /> },
+        { path: "deleteAccount", element: <DeleteAccountPage /> },
+        { path: "groups", element: <GroupPage /> },
+        { path: "calls", element: <CallPage /> },
+        { path: "settings", element: <SettingsPage /> },
 
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" replace /> },
       ],
     },
+
     { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 };
 
 const General = Loadable(lazy(() => import("../pages/dashboard/General")));
+const ProfilePage = Loadable(
+  lazy(() => import("../pages/dashboard/UserProfile"))
+);
+
+const DeleteAccountPage = Loadable(
+  lazy(() => import("../pages/dashboard/DeleteAccountPage"))
+);
+
+const GroupPage = Loadable(lazy(() => import("../pages/dashboard/GroupPage")));
+
+const CallPage = Loadable(lazy(() => import("../pages/dashboard/CallPage")));
+
+const SettingsPage = Loadable(
+  lazy(() => import("../pages/dashboard/SettingsPage"))
+);
+
 const LoginPage = Loadable(
   lazy(() => import("../pages/authenticationPages/LoginPage"))
 );
