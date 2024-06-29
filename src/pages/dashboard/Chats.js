@@ -15,8 +15,22 @@ import {
 import ChatElement from "../../components/ChatElement";
 import { ChatList } from "../../data";
 import { useTheme } from "@mui/material/styles";
+import { useEffect } from "react";
+import { socket } from "../../utils/socket";
+import { useSelector } from "react-redux";
 const Chats = () => {
   const theme = useTheme();
+  const user_id = window.localStorage.getItem("user_id");
+
+  // const { conversations } = useSelector(
+  //   (state) => state.conversation.direct_Chat
+  // );
+
+  // useEffect(() => {
+  //   socket.emit("get_direct_conversation", { user_id }, (data) => {
+  //     // data => list of conversations
+  //   });
+  // }, []);
   return (
     <Box
       sx={{

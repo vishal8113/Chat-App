@@ -8,6 +8,7 @@ import useSettings from "../../hooks/useSettings";
 import AntSwitch from "../../components/AntSwitch";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Notifications from "../../sections/Dialogs/NotificationDialog";
 
 const SideBar = () => {
   const [openUserDialog, setOpenUserDialog] = useState(false);
@@ -183,6 +184,12 @@ const SideBar = () => {
       </Box>
       {openUserDialog && (
         <Users open={openUserDialog} handleClose={closeUserDialog} />
+      )}
+      {openNotificationsDialog && (
+        <Notifications
+          open={openNotificationsDialog}
+          handleClose={closeNotificationsDialog}
+        />
       )}
     </>
   );

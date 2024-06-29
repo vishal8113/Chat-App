@@ -1,13 +1,15 @@
-import { Stack, Box } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import Chats from "./Chats";
 import Conversation from "../../components/Conversation.js";
 import { useTheme } from "@mui/material/styles";
 import Contact from "../../components/Contact";
 import { useSelector } from "react-redux";
 
+import logo from "../../Assets/Images/talkingBirds.png";
+
 const GeneralApp = () => {
   const theme = useTheme();
-  const { sidebar } = useSelector((state) => state.app);
+  const { sidebar, chat_type, room_id } = useSelector((state) => state.app);
   return (
     <>
       <Stack direction={"row"} sx={{ width: "100%" }}>
@@ -22,7 +24,19 @@ const GeneralApp = () => {
                 : theme.palette.background.default,
           }}
         >
-          <Conversation />
+          {room_id !== null && chat_type === "individual" ? (
+            <Conversation />
+          ) : (
+            <Stack
+              spacing={2}
+              sx={{ height: "100%", width: "100%" }}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <img src={logo} alt="logo" width={280} height={250} />
+              <Typography variant="body">Welcome to Chit Chat</Typography>
+            </Stack>
+          )}
         </Box>
         {/* {sidebar.open &&
           // (() => {

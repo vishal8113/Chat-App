@@ -13,7 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import { ToggleSidebar } from "../../redux/slices/app";
 import { useDispatch } from "react-redux";
 
-const Header = () => {
+const Header = (props) => {
   const theme = useTheme();
   const dispatch = useDispatch();
   return (
@@ -52,7 +52,7 @@ const Header = () => {
             </StyledBadge>
           </Box>
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">Vishal</Typography>
+            <Typography variant="subtitle2">{props.name}</Typography>
             <Typography variant="caption">Online</Typography>
           </Stack>
         </Stack>

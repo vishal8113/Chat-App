@@ -101,6 +101,8 @@ export function LogInUser(formValues) {
           dispatch(slice.actions.updateUserName({ name: resp.data.name }));
           dispatch(slice.actions.updateUserAbout({ about: resp.data.about }));
           dispatch(slice.actions.updateEmail({ email: resp.data.email }));
+
+          window.localStorage.setItem("user_id", resp.data.user_id);
         } else {
           dispatch(
             slice.actions.updateProfileUrl({
@@ -119,6 +121,8 @@ export function LogInUser(formValues) {
           })
         );
 
+        window.localStorage.setItem("user_id", resp.data.user_id);
+
         dispatchSnackBar(dispatch, resp, "success");
 
         dispatchIsLoading(dispatch, false);
@@ -134,6 +138,7 @@ export function LogInUser(formValues) {
 
 export function LogOutUser() {
   return async (dispatch, getState) => {
+    window.localStorage.removeItem("user_id");
     dispatch(slice.actions.logout());
     dispatch(slice.actions.updateUserName({ name: "" }));
     dispatch(slice.actions.updateUserAbout({ about: "" }));
@@ -272,7 +277,7 @@ export function saveUserProfile(formValues) {
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getState().token}`,
+            // Authorization: `Bearer ${getState().token}`,
           },
         }
       )
@@ -302,6 +307,8 @@ export function saveUserProfile(formValues) {
         );
         dispatchSnackBar(dispatch, resp, "success");
         dispatchIsLoading(dispatch, false);
+
+        window.localStorage.setItem("user_id", resp.data.user_id);
       })
       .catch((err) => {
         console.log(err);

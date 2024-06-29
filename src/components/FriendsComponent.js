@@ -1,8 +1,10 @@
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { Chat } from "phosphor-react";
+import Header from "./Conversation.js/Header";
 import { socket } from "../utils/socket";
 
-const UserDialogComponent = ({ id, name, imageUrl }) => {
+const FriendsComponent = ({ id, name, image }) => {
   const theme = useTheme();
   const user_id = window.localStorage.getItem("user_id");
 
@@ -21,25 +23,24 @@ const UserDialogComponent = ({ id, name, imageUrl }) => {
         justifyContent={"space-between"}
       >
         <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          <Avatar alt={name} src={imageUrl} />
+          <Avatar alt={name} src={image} />
         </Stack>
         <Stack spacing={0.3}>
           <Typography variant="subtitle2">{name}</Typography>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} spacing={2}>
-          <Button
-            variant="contained"
+          <IconButton
             onClick={() => {
-              socket.emit("friend_request", { to: id, from: user_id });
-              alert("Friend Request sent!");
+              // start chat
+              socket.emit("start_conversation", { to: id, from: user_id });
             }}
           >
-            Send Request
-          </Button>
+            <Chat />
+          </IconButton>
         </Stack>
       </Stack>
     </Box>
   );
 };
 
-export default UserDialogComponent;
+export default FriendsComponent;

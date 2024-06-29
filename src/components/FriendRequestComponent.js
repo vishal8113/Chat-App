@@ -2,9 +2,8 @@ import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { socket } from "../utils/socket";
 
-const UserDialogComponent = ({ id, name, imageUrl }) => {
+const FriendRequestComponent = ({ _id, name, imageUrl, id }) => {
   const theme = useTheme();
-  const user_id = window.localStorage.getItem("user_id");
 
   return (
     <Box
@@ -30,11 +29,10 @@ const UserDialogComponent = ({ id, name, imageUrl }) => {
           <Button
             variant="contained"
             onClick={() => {
-              socket.emit("friend_request", { to: id, from: user_id });
-              alert("Friend Request sent!");
+              socket.emit("accept_request", { request_id: id });
             }}
           >
-            Send Request
+            Accept Request
           </Button>
         </Stack>
       </Stack>
@@ -42,4 +40,4 @@ const UserDialogComponent = ({ id, name, imageUrl }) => {
   );
 };
 
-export default UserDialogComponent;
+export default FriendRequestComponent;
