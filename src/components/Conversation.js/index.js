@@ -2,6 +2,7 @@ import { Stack, Box } from "@mui/material";
 import Header from "./Header";
 import Message from "./Messages";
 import Footer from "./Footer";
+
 const Conversation = () => {
   return (
     <Stack height="100%" maxHeight={"100vh"} width={"auto"}>

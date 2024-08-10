@@ -7,15 +7,17 @@ import {
   Divider,
 } from "@mui/material";
 import StyledBadge from "../StyledBadge";
-import { faker } from "@faker-js/faker";
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
 import { ToggleSidebar } from "../../redux/slices/app";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = (props) => {
+const Header = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  const { pc_current_conversation } = useSelector((state) => state.chat);
+
   return (
     <Box
       p={2}
@@ -48,12 +50,19 @@ const Header = (props) => {
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar src={faker.image.avatar()} />
+              <Avatar
+                src={pc_current_conversation?.img}
+                alt={pc_current_conversation?.name}
+              />
             </StyledBadge>
           </Box>
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">{props.name}</Typography>
-            <Typography variant="caption">Online</Typography>
+            <Typography variant="subtitle2">
+              {pc_current_conversation?.name}
+            </Typography>
+            <Typography variant="caption">
+              {pc_current_conversation?.status}
+            </Typography>
           </Stack>
         </Stack>
         <Stack direction={"row"} alignItems={"center"} spacing={3}>

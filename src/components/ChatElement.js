@@ -1,13 +1,17 @@
 import { Avatar, Box, Stack, Badge, Typography } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, alpha } from "@mui/material/styles";
 
 import StyledBadge from "./StyledBadge";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SelectConversation } from "../redux/slices/app";
 
 const ChatElement = ({ id, name, img, msg, time, unread, online }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const { room_id } = useSelector((state) => state.app);
+  const selectedChatId = room_id?.room_id?.toString();
+
+  let isSelected = selectedChatId === id;
   return (
     <Box
       onClick={() => {
@@ -15,11 +19,14 @@ const ChatElement = ({ id, name, img, msg, time, unread, online }) => {
       }}
       sx={{
         width: "100%",
-        backgroundColor:
-          theme.palette.mode === "light"
-            ? "#fff"
-            : theme.palette.background.default,
-        borderRadius: 2,
+        borderRadius: 1,
+        backgroundColor: isSelected
+          ? theme.palette.mode === "light"
+            ? alpha(theme.palette.primary.main, 0.5)
+            : theme.palette.primary.main
+          : theme.palette.mode === "light"
+          ? "#fff"
+          : theme.palette.background.paper,
       }}
       p={2}
     >
@@ -41,7 +48,7 @@ const ChatElement = ({ id, name, img, msg, time, unread, online }) => {
             <Avatar src={img}></Avatar>
           )}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle" sx={{ fontWeight: 700 }}>
+            <Typography variant="subtitle" sx={{ fontWeight: 500 }}>
               {name}
             </Typography>
             <Typography variant="caption">{msg}</Typography>

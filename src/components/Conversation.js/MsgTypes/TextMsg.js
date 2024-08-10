@@ -18,7 +18,7 @@ const TextMsg = ({ ele }) => {
       >
         <Typography
           variant="body2"
-          color={ele.incoming ? theme.palette.txt : "#fff"}
+          color={ele.incoming ? theme.palette.text : "#fff"}
         >
           {ele.message}
         </Typography>

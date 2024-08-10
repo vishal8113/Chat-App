@@ -1,7 +1,6 @@
 import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Chat } from "phosphor-react";
-import Header from "./Conversation.js/Header";
 import { socket } from "../utils/socket";
 
 const FriendsComponent = ({ id, name, image }) => {
@@ -33,6 +32,8 @@ const FriendsComponent = ({ id, name, image }) => {
             onClick={() => {
               // start chat
               socket.emit("start_conversation", { to: id, from: user_id });
+
+              //window.location.reload();
             }}
           >
             <Chat />

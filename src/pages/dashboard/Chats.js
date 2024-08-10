@@ -17,20 +17,24 @@ import { ChatList } from "../../data";
 import { useTheme } from "@mui/material/styles";
 import { useEffect } from "react";
 import { socket } from "../../utils/socket";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FetchPersonalConversations } from "../../redux/slices/chat";
 const Chats = () => {
   const theme = useTheme();
   const user_id = window.localStorage.getItem("user_id");
 
-  // const { conversations } = useSelector(
-  //   (state) => state.conversation.direct_Chat
-  // );
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   socket.emit("get_direct_conversation", { user_id }, (data) => {
-  //     // data => list of conversations
-  //   });
-  // }, []);
+  const { pc_conversations } = useSelector((state) => state.chat);
+
+  useEffect(() => {
+    socket.emit("getAllPersonalConversations", { user_id }, (data) => {
+      console.log(data);
+      // data => list of conversations
+
+      dispatch(FetchPersonalConversations({ conversations: data }));
+    });
+  }, []);
   return (
     <Box
       sx={{
@@ -84,21 +88,23 @@ const Chats = () => {
             overflowX: "hidden",
           }}
         >
-          <Stack spacing={2.4}>
+          {/* <Stack spacing={2.4}>
             <Typography variant="subtitle2" sx={{ color: "#676767" }}>
               Pinned
             </Typography>
             {ChatList.filter((ele) => ele.pinned).map((ele) => {
               return <ChatElement {...ele} />;
             })}
-          </Stack>
+          </Stack> */}
           <Stack spacing={2.4}>
             <Typography variant="subtitle2" sx={{ color: "#676767" }}>
               All Chats
             </Typography>
-            {ChatList.filter((ele) => !ele.pinned).map((ele) => {
-              return <ChatElement {...ele} />;
-            })}
+            {pc_conversations
+              .filter((ele) => !ele.pinned)
+              .map((ele) => {
+                return <ChatElement {...ele} />;
+              })}
           </Stack>
         </Stack>
       </Stack>

@@ -1,4 +1,5 @@
 import { PATH_DASHBOARD } from "./routes/path";
+
 export const defaultSettings = {
   themeMode: "light",
 };

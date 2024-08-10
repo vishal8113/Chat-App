@@ -22,7 +22,12 @@ const SettingsProvider = ({ children }) => {
   };
 
   return (
-    <SettingContext.Provider value={{ ...settings, onToggleMode }}>
+    <SettingContext.Provider
+      value={{
+        ...settings,
+        onToggleMode,
+      }}
+    >
       {children}
     </SettingContext.Provider>
   );

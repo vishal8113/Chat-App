@@ -4,11 +4,19 @@ import { Stack } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { connectSocket, socket } from "../../utils/socket";
-import { OpenSnackBar } from "../../redux/slices/app";
+import { OpenSnackBar, SelectConversation } from "../../redux/slices/app";
 import { useEffect } from "react";
+import {
+  AddPersonalConversation,
+  AddPersonalMessage,
+  UpdatePersonalConversation,
+} from "../../redux/slices/chat";
 
 const DashboardLayout = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
+  const { pc_conversations, pc_current_conversation } = useSelector(
+    (state) => state.chat
+  );
   const user_id = window.localStorage.getItem("user_id");
   const dispatch = useDispatch();
 
@@ -38,17 +46,57 @@ const DashboardLayout = () => {
         dispatch(OpenSnackBar({ severity: "success", message: data.message }));
       };
 
+      const handleChat = (data) => {
+        const existing_conversation = pc_conversations.find(
+          (ele) => ele?.id === data._id
+        );
+
+        if (existing_conversation) {
+          dispatch(UpdatePersonalConversation({ conversation: data }));
+        } else {
+          dispatch(AddPersonalConversation({ conversation: data }));
+        }
+        dispatch(SelectConversation({ room_id: data._id }));
+      };
+
+      const handleNewMessage = (data) => {
+        const message = data.message;
+
+        if (pc_current_conversation?.id === data.conversation_id) {
+          dispatch(
+            AddPersonalMessage({
+              id: message._id,
+              type: "msg",
+              subtype: message.type,
+              message: message.text,
+              incoming: message.to === user_id,
+              outgoing: message.from === user_id,
+            })
+          );
+        }
+      };
+
       socket.on("new_friend_request", handleNewFriendRequest);
       socket.on("request_accepted", handleRequestAccepted);
       socket.on("request_sent", handleRequestSent);
+      socket.on("start_chat", handleChat);
+      socket.on("new_message", handleNewMessage);
 
       return () => {
-        socket.off("new_friend_request", handleNewFriendRequest);
-        socket.off("request_accepted", handleRequestAccepted);
-        socket.off("request_sent", handleRequestSent);
+        socket?.off("new_friend_request");
+        socket?.off("request_accepted");
+        socket?.off("request_sent");
+        socket?.off("start_chat");
+        socket?.off("new_message");
       };
     }
-  }, [isLoggedIn, user_id]);
+  }, [
+    isLoggedIn,
+    user_id,
+    pc_conversations,
+    pc_current_conversation,
+    dispatch,
+  ]);
 
   if (!isLoggedIn) {
     return <Navigate to="/auth/login" />;

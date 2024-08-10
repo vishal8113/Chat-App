@@ -1,5 +1,5 @@
 import { Stack, Box, Typography, Link } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { useTheme, alpha } from "@mui/material/styles";
 import MessageOptions from "../MessageOptions";
 const LinkMsg = ({ ele }) => {
   const theme = useTheme();
@@ -8,7 +8,7 @@ const LinkMsg = ({ ele }) => {
       p={1.5}
       sx={{
         backgroundColor: ele.incoming
-          ? theme.palette.background.default
+          ? alpha(theme.palette.background.default, 1)
           : theme.palette.primary.main,
         borderRadius: 1.5,
         width: "max-content",
