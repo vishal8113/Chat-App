@@ -197,9 +197,9 @@ const Footer = () => {
               onClick={() => {
                 socket.emit("text_message", {
                   message: linkify(value),
-                  conversation_id: room_id.room_id,
+                  conversation_id: pc_current_conversation.id,
                   from: user_id,
-                  to: pc_current_conversation.userId,
+                  to: pc_current_conversation.user_id,
                   type: containsUrl(value) ? "link" : "text",
                 });
                 setValue("");

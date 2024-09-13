@@ -83,6 +83,7 @@ const DashboardLayout = () => {
       socket.on("new_message", handleNewMessage);
 
       return () => {
+        // cleanup func
         socket?.off("new_friend_request");
         socket?.off("request_accepted");
         socket?.off("request_sent");
@@ -90,13 +91,7 @@ const DashboardLayout = () => {
         socket?.off("new_message");
       };
     }
-  }, [
-    isLoggedIn,
-    user_id,
-    pc_conversations,
-    pc_current_conversation,
-    dispatch,
-  ]);
+  }, [isLoggedIn, socket]);
 
   if (!isLoggedIn) {
     return <Navigate to="/auth/login" />;

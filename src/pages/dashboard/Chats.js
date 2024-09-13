@@ -29,7 +29,6 @@ const Chats = () => {
 
   useEffect(() => {
     socket.emit("getAllPersonalConversations", { user_id }, (data) => {
-      console.log(data);
       // data => list of conversations
 
       dispatch(FetchPersonalConversations({ conversations: data }));

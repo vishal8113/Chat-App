@@ -27,16 +27,19 @@ const Message = () => {
       (ele) => ele?.id === room_id.room_id
     );
 
+    console.log("***************************************");
+    console.log(room_id);
+
     socket.emit(
       "get_messages",
-      { conversation_id: current_conversation?.id },
+      { conversation_id: current_conversation.id },
       (data) => {
         dispatch(FetchCurrentMessages({ messages: data }));
       }
     );
 
     dispatch(SetCurrentConversation(current_conversation));
-  }, []);
+  }, [pc_conversations, pc_current_messages]);
   return (
     <Box p={3}>
       <Stack spacing={3}>

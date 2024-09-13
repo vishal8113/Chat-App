@@ -23,20 +23,20 @@ const slice = createSlice({
   reducers: {
     fetchPersonalConversations(state, action) {
       const list = action.payload.conversations.map((ele) => {
-        const cnt_user = ele.participants.find(
+        const list_user = ele.participants.find(
           (el) => el._id.toString() !== user_id
         );
 
         return {
-          id: cnt_user._id,
-          user_id: user_id,
-          name: cnt_user.name,
-          img: cnt_user.imageUrl,
+          id: ele._id,
+          user_id: list_user._id,
+          name: list_user.name,
+          img: list_user.imageUrl,
           pinned: false,
           unread: 0,
           time: "10:22",
-          status: "offline",
-          msg: "abc",
+          status: list_user.status,
+          msg: ele.messages.slice(-1)[0].text,
         };
       });
 
